@@ -1,16 +1,19 @@
 # AIGC Studio
 
-**IP 试制与验证平台**：面向抖音 / B 站 / YouTube / Instagram 的 AI 短剧自动化生产系统。
+**面向 AI 产品、App 和独立游戏的多模态内容发布与本地化工作室**（三引擎结构：垂直服务现金流 → 内部自动化软件 → 自有 IP 孵化）。
 
-商业定位（[ADR 004](docs/adr/004-business-positioning.md)）：B2B 现金流（IP 概念样片/试播集/整剧三档交付）+ 数据驱动的自有 IP 孵化 + 自动化生产系统。不打价格战，卖点是更快的 IP 验证、更稳的角色一致性、更透明的成本、更高的成片通过率。
+总体定位（[ADR 005](docs/adr/005-three-engine-studio.md)）：用 AIGC 卖结果，用自动化积累软件资产，用自有 IP 保留非线性收益。精力分配 70/20/10；套餐制服务，不打价格战。
+
+首个垂直场景（[ADR 004](docs/adr/004-business-positioning.md)）：AI 短剧/漫剧——IP 概念样片/试播集/整剧三档交付 + 数据驱动漏斗，同时作为自有 IP 的孵化载体。
 
 生产策略（[ADR 003](docs/adr/003-shot-level-multi-model-routing.md)）：角色参考图驱动的分镜级多模型路由——Wan Flash / Hailuo 跑廉价镜头，HappyHorse 做主力，Wan 2.7 管对白连续性，Kling 救场，Seedance/Gemini 只做 5–10% Hero 镜头；Animatic 先行、配音优先、成本按可用秒核算。
 
 ## 策略与决策文档
 
-- [生产策略：多模型路由](docs/strategy/multi-model-routing.md)
+- [三引擎工作室策略](docs/strategy/three-engine-studio.md)（最新定位）
 - [商业策略：B2B + IP 孵化](docs/strategy/business-model.md)
-- [ADR 目录](docs/adr/)（001 Monorepo / 002 Provider 抽象 / 003 多模型路由 / 004 商业定位）
+- [生产策略：多模型路由](docs/strategy/multi-model-routing.md)
+- [ADR 目录](docs/adr/)（001 Monorepo / 002 Provider 抽象 / 003 多模型路由 / 004 商业定位 / 005 三引擎定位）
 
 ## 仓库结构（Monorepo）
 
