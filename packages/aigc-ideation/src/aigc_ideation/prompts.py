@@ -38,7 +38,9 @@ SYSTEM_PROMPT = """\
      "narration": "旁白（无则空字符串）",
      "audio_mood": "配音情绪，如 tense-mandarin-male",
      "camera_direction": "运镜，如 dolly in",
-     "transition": "cut|fade|dissolve"}
+     "transition": "cut|fade|dissolve",
+     "model_tier": "draft|performance|dialogue|complex|hero",
+     "budget_cny": 3}
   ]
 }
 
@@ -46,6 +48,9 @@ SYSTEM_PROMPT = """\
 - shots 总时长必须接近目标时长，单镜头 4–10 秒。
 - 每个 scene_index 必须存在于 scenes 的 index 中。
 - 视频 prompt 必须是英文且包含角色一致性锁定词（如出现角色，写明其外貌关键词）。
+- model_tier 路由规则：空镜/道具/背影/简单运镜=draft；角色表演=performance；
+  有对白或需首尾帧衔接=dialogue；复杂动作/多角色同框=complex；开场与高潮=hero。
+  hero 镜头最多 1-2 个，budget_cny 按档位估算（draft≤2, performance≤5, dialogue≤5, complex≤8, hero≤20）。
 """
 
 

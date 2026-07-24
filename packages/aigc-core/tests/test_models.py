@@ -57,3 +57,17 @@ def test_character_reference_assets() -> None:
 def test_shot_type_enum() -> None:
     shot = Shot(scene_id=uuid4(), index=0, shot_type=ShotType.AERIAL)
     assert shot.shot_type == "aerial"
+
+
+def test_shot_routing_defaults() -> None:
+    from aigc_core.models import ModelTier
+
+    shot = Shot(scene_id=uuid4(), index=0)
+    assert shot.model_tier == ModelTier.DRAFT
+    assert shot.max_attempts == 2
+    assert shot.budget_cny is None
+
+
+def test_character_voice_id_default() -> None:
+    char = Character(name="A")
+    assert char.voice_id == ""

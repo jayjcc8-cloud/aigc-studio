@@ -86,6 +86,16 @@ class GenerationStatus(StrEnum):
     FAILED = "failed"
 
 
+class ModelTier(StrEnum):
+    """Routing tier for a shot, per ADR 003 (multi-model routing)."""
+
+    DRAFT = "draft"  # 廉价草稿：空镜、道具、背影、简单运镜
+    PERFORMANCE = "performance"  # 主力表演：单/双角色、参考图一致性
+    DIALOGUE = "dialogue"  # 对白与连续性：自定义音频、首尾帧衔接
+    COMPLEX = "complex"  # 复杂救场：多参考图、复杂动作、参考视频
+    HERO = "hero"  # 开场/高潮/营销镜头（5-10% 流量）
+
+
 class Character(BaseModel):
     """A character appearing in the short drama."""
 
@@ -97,6 +107,7 @@ class Character(BaseModel):
     personality: str = ""
     appearance: str = ""
     voice_description: str = ""
+    voice_id: str = ""  # 固定的 TTS 声音 ID，整季复用（ADR 003）
     reference_asset_ids: list[UUID] = Field(default_factory=list)
 
 
@@ -119,6 +130,10 @@ class Shot(BaseModel):
     audio_mood: str = ""
     camera_direction: str = ""
     transition: str = "cut"
+    # 路由与成本控制（ADR 003）
+    model_tier: ModelTier = ModelTier.DRAFT
+    max_attempts: int = Field(default=2, ge=1, le=5)
+    budget_cny: float | None = Field(default=None, ge=0)
 
 
 class Scene(BaseModel):
