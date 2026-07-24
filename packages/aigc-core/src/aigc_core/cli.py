@@ -13,7 +13,9 @@ from aigc_core.models import Platform
 
 app = typer.Typer(help="AIGC short-drama studio CLI")
 script_app = typer.Typer(help="Script generation commands")
+video_app = typer.Typer(help="Video generation commands")
 app.add_typer(script_app, name="script")
+app.add_typer(video_app, name="video")
 
 
 @app.callback()
@@ -64,6 +66,67 @@ def script_generate(
         typer.echo(f"剧本已写入 {output}")
     else:
         typer.echo(payload)
+
+
+@video_app.command("generate")
+def video_generate(
+    prompt: str = typer.Option(..., "--prompt", help="英文视频生成 prompt"),
+    duration: int = typer.Option(5, "--duration", "-d", help="时长（秒，4-15）"),
+    aspect_ratio: str = typer.Option("9:16", "--aspect-ratio", "-a"),
+    resolution: str = typer.Option("720p", "--resolution", "-r"),
+    image_url: str | None = typer.Option(
+        None, "--image-url", help="参考图公网 URL（提供则为图生视频）"
+    ),
+    audio: bool = typer.Option(False, "--audio", help="生成同步音效/配乐"),
+) -> None:
+    """Generate one video clip via the configured Seedance provider."""
+    from aigc_generation import SeedanceConfig, SeedanceVideoProvider
+
+    from aigc_core.models import AssetType, GenerationStatus
+    from aigc_core.provider import GenerationRequest
+
+    settings = get_settings()
+    if not settings.seedance_api_key:
+        raise typer.BadParameter("未配置 SEEDANCE_API_KEY，请填入 .env。")
+
+    provider = SeedanceVideoProvider(
+        SeedanceConfig(
+            base_url=settings.seedance_base_url,
+            api_key=settings.seedance_api_key,
+            model=settings.seedance_model,
+            max_poll_seconds=settings.seedance_max_poll_seconds,
+        )
+    )
+    params: dict[str, object] = {
+        "duration": duration,
+        "aspect_ratio": aspect_ratio,
+        "resolution": resolution,
+        "generate_audio": audio,
+    }
+    if image_url:
+        params["image_url"] = image_url
+
+    from uuid import uuid4
+
+    result = asyncio.run(
+        provider.generate(
+            GenerationRequest(
+                project_id=uuid4(),
+                operation="cli-test",
+                asset_type=AssetType.VIDEO,
+                prompt=prompt,
+                params=params,
+            )
+        )
+    )
+    if result.status != GenerationStatus.SUCCESS or result.asset is None:
+        typer.secho(f"生成失败: {result.error_message}", fg=typer.colors.RED)
+        raise typer.Exit(code=1)
+    typer.secho(
+        f"生成成功: {result.asset.uri}（耗时 {result.latency_seconds:.0f}s，"
+        f"credits={result.asset.metadata.get('credits')}）",
+        fg=typer.colors.GREEN,
+    )
 
 
 if __name__ == "__main__":

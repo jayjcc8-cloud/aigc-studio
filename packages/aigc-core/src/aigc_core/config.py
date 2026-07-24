@@ -34,6 +34,12 @@ class AppSettings(BaseSettings):
     llm_model: str = "claude-sonnet-4-5"
     llm_timeout_seconds: float = 120.0
 
+    # Seedance video generation. Env vars: SEEDANCE_API_KEY / SEEDANCE_BASE_URL / ...
+    seedance_api_key: str | None = None
+    seedance_base_url: str = "https://api.seedance2.ai"
+    seedance_model: str = "seedance-2-0"
+    seedance_max_poll_seconds: float = 600.0
+
     @classmethod
     def from_yaml(cls, path: Path) -> AppSettings:
         """Load settings from a YAML file and merge with environment variables."""
