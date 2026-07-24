@@ -1,0 +1,77 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Media and generated assets (large files)
+projects/*/
+!projects/.gitkeep
+data/
+assets/
+*.mp4
+*.mov
+*.wav
+*.mp3
+*.png
+*.jpg
+*.jpeg
+*.gif
+
+# Models and checkpoints
+models/
+checkpoints/
+*.safetensors
+*.ckpt
+*.pth
+
+# Secrets
+.env.local
+.env.*.local
+secrets.yaml
+secrets.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Claude
+.claude/
