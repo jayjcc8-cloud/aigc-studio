@@ -7,6 +7,7 @@ from typing import Any
 
 from aigc_core.models import (
     Character,
+    ModelTier,
     Platform,
     Scene,
     Shot,
@@ -53,6 +54,9 @@ class ShotDraft(BaseModel):
     audio_mood: str = ""
     camera_direction: str = ""
     transition: str = "cut"
+    model_tier: ModelTier = ModelTier.DRAFT
+    max_attempts: int = Field(default=2, ge=1, le=5)
+    budget_cny: float | None = Field(default=None, ge=0)
 
 
 class StoryDraft(BaseModel):
@@ -110,6 +114,9 @@ class StoryDraft(BaseModel):
                 audio_mood=draft.audio_mood,
                 camera_direction=draft.camera_direction,
                 transition=draft.transition,
+                model_tier=draft.model_tier,
+                max_attempts=draft.max_attempts,
+                budget_cny=draft.budget_cny,
             )
             scene.shot_ids.append(shot.id)
             shots.append(shot)
