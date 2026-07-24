@@ -1,9 +1,16 @@
 # AIGC Studio
 
-面向抖音 / B 站 / YouTube / Instagram 的 AI 短剧自动化生产工作流。
+**IP 试制与验证平台**：面向抖音 / B 站 / YouTube / Instagram 的 AI 短剧自动化生产系统。
 
-参考 Seedance、可灵（Kling）等工具实现电视剧/电影质感的短剧内容，采用**混合技术栈**
-（Python 编排 + 付费 API 生成核心素材）、**关键环节人工审核**、**成本与质量平衡**的路线。
+商业定位（[ADR 004](docs/adr/004-business-positioning.md)）：B2B 现金流（IP 概念样片/试播集/整剧三档交付）+ 数据驱动的自有 IP 孵化 + 自动化生产系统。不打价格战，卖点是更快的 IP 验证、更稳的角色一致性、更透明的成本、更高的成片通过率。
+
+生产策略（[ADR 003](docs/adr/003-shot-level-multi-model-routing.md)）：角色参考图驱动的分镜级多模型路由——Wan Flash / Hailuo 跑廉价镜头，HappyHorse 做主力，Wan 2.7 管对白连续性，Kling 救场，Seedance/Gemini 只做 5–10% Hero 镜头；Animatic 先行、配音优先、成本按可用秒核算。
+
+## 策略与决策文档
+
+- [生产策略：多模型路由](docs/strategy/multi-model-routing.md)
+- [商业策略：B2B + IP 孵化](docs/strategy/business-model.md)
+- [ADR 目录](docs/adr/)（001 Monorepo / 002 Provider 抽象 / 003 多模型路由 / 004 商业定位）
 
 ## 仓库结构（Monorepo）
 
