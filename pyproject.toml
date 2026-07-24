@@ -80,6 +80,12 @@ ignore = ["E501"]
 [tool.ruff.lint.pydocstyle]
 convention = "google"
 
+[tool.ruff.lint.per-file-ignores]
+# Typer 的 Option()/Argument() 默认值是官方惯用法
+"packages/*/src/**/cli.py" = ["B008"]
+# 测试中的 mock/fake 对象常需保留协议签名而未使用全部参数
+"packages/*/tests/*.py" = ["ARG"]
+
 [tool.black]
 line-length = 100
 target-version = ["py311"]

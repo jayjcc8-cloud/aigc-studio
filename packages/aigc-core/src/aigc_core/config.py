@@ -28,6 +28,12 @@ class AppSettings(BaseSettings):
     default_music_provider: str = "dummy"
     default_subtitle_provider: str = "dummy"
 
+    # LLM (script generation). Env vars: LLM_BASE_URL / LLM_API_KEY / LLM_MODEL.
+    llm_base_url: str = "https://api.anthropic.com"
+    llm_api_key: str | None = None
+    llm_model: str = "claude-sonnet-4-5"
+    llm_timeout_seconds: float = 120.0
+
     @classmethod
     def from_yaml(cls, path: Path) -> AppSettings:
         """Load settings from a YAML file and merge with environment variables."""
