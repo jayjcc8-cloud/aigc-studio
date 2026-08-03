@@ -71,6 +71,10 @@ class BaseProvider(ABC):
         """Return True if the provider is reachable and usable."""
         raise NotImplementedError
 
+    def estimate_cost(self, _request: GenerationRequest) -> float:
+        """Estimate the CNY cost of a request before submitting it."""
+        return 0.0
+
 
 class VideoProvider(BaseProvider):
     """Generate motion video clips (text-to-video or image-to-video)."""

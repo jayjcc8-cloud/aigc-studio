@@ -1,0 +1,67 @@
+name: product_launch
+description: AI 产品海外发布内容包（资料结构化 → 中英文案 → 视频脚本 → 导出交付包）
+steps:
+  - id: product_brief
+    type: llm
+    provider: { capability: llm, name: kimi }
+    system: |
+      你是资深产品营销专家。只输出 JSON（不要 markdown 代码块），字段：
+      product_name, one_liner, target_users, core_problem, key_features(数组),
+      advantages(数组), use_cases(数组), evidence_and_limits, brand_voice,
+      english_glossary(对象，中文术语到英文)。
+    prompt: |
+      以下是客户提供的原始产品资料：
+      {product_docs}
+
+      请将其结构化为产品摘要 JSON。不得夸大功能，证据不足处写入 evidence_and_limits。
+    approval_required: true
+    max_retries: 1
+
+  - id: launch_copy
+    type: llm
+    provider: { capability: llm, name: kimi }
+    system: |
+      你是双语（中英）发布文案专家。只输出 JSON（不要 markdown 代码块），字段：
+      landing_zh, landing_en, product_hunt_en, store_description_en, social_posts(5 条数组)。
+      英文必须母语级自然，禁止夸大。
+    prompt: |
+      基于以下产品摘要生成发布文案：
+      {product_brief}
+    approval_required: true
+    max_retries: 1
+
+  - id: video_script
+    type: llm
+    provider: { capability: llm, name: kimi }
+    system: |
+      你是产品演示视频导演。只输出 JSON（不要 markdown 代码块）：shots 数组，
+      每个镜头含 index, duration_seconds, visual(画面/录屏操作), subtitle_zh,
+      subtitle_en, voiceover_en, transition。总时长 30 秒，优先使用真实录屏而非生成画面。
+    prompt: |
+      产品摘要：{product_brief}
+      发布文案：{launch_copy}
+      请输出 30 秒产品演示视频的分镜脚本 JSON。
+    approval_required: true
+    max_retries: 1
+
+  - id: voiceover
+    type: provider
+    provider: { capability: tts, name: dummy }
+    asset_type: audio
+    prompt: "{video_script}"
+
+  - id: demo_clip
+    type: provider
+    provider: { capability: video, name: dummy }
+    asset_type: video
+    prompt: "{video_script}"
+    params: { duration: 5, aspect_ratio: "16:9" }
+
+  - id: package
+    type: export
+    params:
+      package_name: launch_package
+      files:
+        01-copy/product_brief.md: product_brief
+        01-copy/launch_copy.md: launch_copy
+        03-video/video_script.md: video_script
