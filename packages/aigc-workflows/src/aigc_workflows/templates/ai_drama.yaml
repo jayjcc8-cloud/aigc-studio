@@ -1,0 +1,27 @@
+# AI 漫剧工作流（声明式占位）。
+# 当前执行路径为专用代码：aigc-ideation.ScriptGenerator（剧本）→
+# aigc_core.pipeline.Pipeline（分镜素材生成）。CLI 入口：
+#   aigc script generate ...
+# 待工作流引擎支持循环与嵌套 JSON schema 后，迁移为由本模板驱动。
+name: ai_drama
+description: AI 漫剧生产（剧本 → 分镜 → 镜头素材 → 成片）
+engine: external
+steps:
+  - id: script
+    type: llm
+    provider: { capability: llm, name: kimi }
+    note: 由 aigc_ideation.script.ScriptGenerator 执行，带 JSON schema 校验与重试
+  - id: storyboard_assets
+    type: provider
+    provider: { capability: image, name: dummy }
+    note: 由 aigc_core.pipeline.Pipeline 按 Shot 循环执行
+  - id: clips
+    type: provider
+    provider: { capability: video, name: dummy }
+    note: Seedance/百炼 Wan 等按 ADR 003 路由档位选择
+  - id: voiceover
+    type: provider
+    provider: { capability: tts, name: dummy }
+  - id: compose
+    type: export
+    note: FFmpeg 合成（规划中，aigc-editing）

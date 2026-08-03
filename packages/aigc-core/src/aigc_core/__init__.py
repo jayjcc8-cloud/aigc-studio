@@ -18,6 +18,21 @@ from aigc_core.models import (
     ShotType,
     Story,
 )
+from aigc_core.os_models import (
+    Approval,
+    ApprovalStatus,
+    ContentItem,
+    CostRecord,
+    CostType,
+    ExportRecord,
+    GenerationRecord,
+    KnowledgeBase,
+    ProjectType,
+    Task,
+    TaskStatus,
+    VersionRecord,
+    Workspace,
+)
 from aigc_core.pipeline import Pipeline
 from aigc_core.provider import (
     BaseProvider,
@@ -31,9 +46,27 @@ from aigc_core.provider import (
     TtsProvider,
     VideoProvider,
 )
+from aigc_core.registry import LlmProviderAdapter, ProviderRegistry
+from aigc_core.storage import ProjectStorage
 
 __all__ = [
     "AppSettings",
+    "Approval",
+    "ApprovalStatus",
+    "ContentItem",
+    "CostRecord",
+    "CostType",
+    "ExportRecord",
+    "GenerationRecord",
+    "KnowledgeBase",
+    "LlmProviderAdapter",
+    "ProjectStorage",
+    "ProjectType",
+    "ProviderRegistry",
+    "Task",
+    "TaskStatus",
+    "VersionRecord",
+    "Workspace",
     "get_settings",
     "Asset",
     "AssetType",

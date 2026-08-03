@@ -181,6 +181,15 @@ class Asset(BaseModel):
     cost_usd: float = 0.0
     status: GenerationStatus = GenerationStatus.SUCCESS
     created_at: datetime = Field(default_factory=datetime.utcnow)
+    # 合规与溯源（ADR 003/006）
+    language: str = ""
+    source_type: str = (
+        "unknown"  # client_upload|human_created|ai_generated|licensed_asset|public_domain|unknown
+    )
+    copyright_status: str = "unknown"  # cleared|pending|restricted|unknown
+    duration: float | None = None
+    width: int | None = None
+    height: int | None = None
 
 
 class ReviewDecision(BaseModel):
@@ -213,6 +222,14 @@ class Project(BaseModel):
     version: int = 1
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
+    # Studio OS 扩展（ADR 006，默认值保持向后兼容）
+    workspace_id: UUID | None = None
+    project_type: str = "custom"  # 见 os_models.ProjectType
+    client_name: str = ""
+    source_language: str = "zh"
+    target_languages: list[str] = Field(default_factory=list)
+    budget_limit_cny: float | None = None
+    deadline: datetime | None = None
 
     def add_decision(self, decision: ReviewDecision) -> None:
         """Record a new review decision, replacing any prior one for the same gate."""
